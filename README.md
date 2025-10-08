@@ -7,10 +7,9 @@ API para gerenciamento de jogos com arquitetura de microserviços e comunicaçã
 - Criação de jogos com disparo assíncrono para fila de pagamento
 - Listagem completa de jogos
 - Consulta de jogo por ID
-- Busca avançada com filtros, Fuzzy Search, paginação e ordenação (ElasticSearch)
+- Busca avançada com filtros, paginação e ordenação (ElasticSearch)
 - Atualização de status dos jogos
 - Cancelamento de jogos
-- Relatório de jogos mais bem avaliados (ElasticSearch)
 
 ### 🔐 Segurança e Middleware
 - Middleware global de tratamento de erros
@@ -81,3 +80,4 @@ fcg-games/
 - **Mensageria**: Azure Service Bus
 - **Serverless**: Azure Functions
 - **Monitoramento**: New Relic (configurado via Dockerfile)
+- **ElasticSearch**: Serveless via Azure Marketplace
