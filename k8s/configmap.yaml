@@ -14,6 +14,5 @@ data:
   # API Configuration
   AllowedHosts: "*"
 
-  # Swagger/API Documentation
-  ApiTitle: "fcg-games.API"
-  ApiVersion: "v1"
+  # ServiceBus Configuration
+  ServiceBus__NotificationQueueName: "notifications-queue"
