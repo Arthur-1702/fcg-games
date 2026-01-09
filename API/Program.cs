@@ -1,20 +1,21 @@
-using Azure;
 using API.Middlewares;
 using API.Models;
 using Application.Interfaces;
 using Application.Services;
 using Application.Settings;
+using Azure;
 using Domain.Repositories;
 using Elastic.Clients.Elasticsearch;
 using Elastic.Transport;
 using Infrastructure.Context;
-using Infrastructure.Services;
 using Infrastructure.Repositories;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Prometheus;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
@@ -208,6 +209,10 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
+// Configura Monitoramento com Prometheus
+app.UseRouting();
+app.UseHttpMetrics(); // Coleta métricas HTTP automaticamente
+app.MapMetrics(); // Expõe endpoint /metrics
 
 // Middleware que valida autentica��o JWT em cada requisi��o
 app.UseAuthentication();
