@@ -1,4 +1,4 @@
-name: Pipeline FCG USERS API
+name: Pipeline FCG GAMES API
 
 on:
   push:
