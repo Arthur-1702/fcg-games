@@ -74,8 +74,8 @@ namespace Application.Services
             var gameAdded = _gameRepository.AddGame(gameEntity);
 
             // Indexing the new game in Elasticsearch
-            var gameDocument = gameAdded.ToDocument();
-            _elasticService.IndexAsync(gameDocument, gameDocument.Id).Wait();
+            // var gameDocument = gameAdded.ToDocument();
+            // _elasticService.IndexAsync(gameDocument, gameDocument.Id).Wait();
 
 
             return gameAdded.ToResponse();

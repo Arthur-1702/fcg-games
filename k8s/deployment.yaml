@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fcggames
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fcggames
+  template:
+    metadata:
+      labels:
+        app: fcggames
+    spec:
+      containers:
+        - name: fcggames
+          image: arthur1702/fcggames:latest
+          env:
+            - name: TZ
+              value: "America/Sao_Paulo"
+          ports:
+            - containerPort: 80
