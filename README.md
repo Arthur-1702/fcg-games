@@ -1,83 +1,383 @@
-# Games API
+# 🎮 Games API - FCG (FIAP Cloud Games)
 
-API para gerenciamento de jogos com arquitetura de microserviços e comunicação orientada a eventos.
+API para gerenciamento de jogos com arquitetura de microserviços e comunicação orientada a eventos. Parte da plataforma FCG que oferece um ecossistema completo para jogos em nuvem.
 
 ## ✅ Funcionalidades Principais
+
 ### 🎮 Gestão de Jogos
-- Criação de jogos com disparo assíncrono para fila de pagamento
-- Listagem completa de jogos
-- Consulta de jogo por ID
-- Busca avançada com filtros, paginação e ordenação (ElasticSearch)
-- Atualização de status dos jogos
-- Cancelamento de jogos
+
+- ✅ Criação de jogos com disparo assíncrono para fila de pagamento
+- ✅ Listagem completa de jogos com paginação
+- ✅ Consulta de jogo por ID
+- ✅ Busca avançada com filtros (ElasticSearch)
+- ✅ Ordenação e paginação de resultados
+- ✅ Atualização de status dos jogos
+- ✅ Cancelamento de jogos
+- ✅ Notificações de eventos em tempo real via Azure Service Bus
 
 ### 🔐 Segurança e Middleware
-- Middleware global de tratamento de erros
-- Retorno padronizado com ErrorResponse
-- Registro de logs com RequestId único
-- Autenticação com Token JWT da FCG.Users.API
-- Verificação de permissões por endpoint
+
+- ✅ Middleware global de tratamento de erros
+- ✅ Retorno padronizado com ErrorResponse
+- ✅ Registro de logs com RequestId único
+- ✅ Autenticação com Token JWT da FCG.Users API
+- ✅ Verificação de permissões por endpoint
+- ✅ CORS configurado para segurança
+- ✅ Rate limiting e proteção contra ataques
+
+### 🔍 Busca e Indexação
+
+- ✅ Integração com ElasticSearch para busca avançada
+- ✅ Filtros por gênero, plataforma, preço, etc.
+- ✅ Busca full-text em títulos e descrições
+- ✅ Sincronização automática de índices
+
+### 📊 Observabilidade
+
+- ✅ Testes unitários completos com cobertura alta
+- ✅ Logging centralizado via New Relic
+- ✅ Rastreamento de requisições
+- ✅ Métricas de performance
 
 ## 🧪 Testes
 
-- Testes unitários completos
+- Testes unitários completos com xUnit
 - Cobertura de regras de domínio, autenticação e serviços
 - Cenários válidos e inválidos
-- Mocks de repositórios e serviços
+- Mocks de repositórios e serviços com Moq
+- FluentAssertions para leitura clara dos testes
 
-  ## 🛠 Tecnologias Utilizadas
+## 🛠 Tecnologias Utilizadas
 
-- **Framework**: .NET 8
-- **ORM**: Entity Framework Core com Migrations
-- **Banco de Dados**: SQL Server
-- **ElasticSearch**:	Indexação e busca de jogos
-- **Autenticação**: JWT (JSON Web Tokens)
-- **Testes**: xUnit, Moq e FluentAssertions
-- **Documentação**: Swashbuckle.AspNetCore (Swagger)
-- **Segurança**: PBKDF2 para hash de senhas
-- **Logging**: Middleware customizado para Request/Response
-- **Containerização**: Docker com multi-stage build
-- **Monitoramento**: New Relic
-- **Mensageria**: Azure Service Bus com Tópicos e Subscriptions
-- **Processamento Assíncrono**: Azure Functions
-- **Orquestração**: Azure Container Apps
-- **API Gateway**: Azure API Management
-- **CI/CD**: Azure DevOps
+| Camada                       | Tecnologias                                      |
+| ---------------------------- | ------------------------------------------------ |
+| **Framework**                | .NET 8                                           |
+| **ORM**                      | Entity Framework Core com Migrations             |
+| **Banco de Dados**           | SQL Server                                       |
+| **Busca**                    | ElasticSearch (via Azure Marketplace)            |
+| **Autenticação**             | JWT (JSON Web Tokens) - Integração FCG.Users API |
+| **Testes**                   | xUnit, Moq, FluentAssertions                     |
+| **API Documentation**        | Swashbuckle.AspNetCore (Swagger)                 |
+| **Segurança**                | PBKDF2 para hash de senhas                       |
+| **Logging**                  | Middleware customizado + New Relic               |
+| **Containerização**          | Docker com multi-stage build                     |
+| **Monitoramento**            | New Relic APM                                    |
+| **Mensageria**               | Azure Service Bus (Tópicos e Subscriptions)      |
+| **Processamento Assíncrono** | Hosted Services, Azure Functions                 |
+| **Orquestração**             | Azure Container Apps                             |
+| **API Gateway**              | Azure API Management                             |
+| **CI/CD**                    | GitHub Actions / Azure DevOps                    |
 
 ## ⚙️ Pré-requisitos
 
-- .NET 8 SDK
-- SQL Server
+- .NET 8 SDK ou superior
+- SQL Server 2019+ (local ou Azure SQL Database)
+- ElasticSearch 8.0+ (local ou Azure)
+- Docker (para containerização)
+- Git
+- Visual Studio 2022 ou VS Code com C# extensions
 
-## 🛠️ Configuração
+## 🛠️ Como Executar Localmente
 
-1. Configure a connection string no `appsettings.json` ou variáveis de ambiente
-2. Execute as migrations para criar o banco de dados
-3. Execute a aplicação
-4. Acesse a documentação Swagger em `http://localhost:<porta>/swagger/index.html`
+### 1. Clonar o repositório
+
+```bash
+git clone https://github.com/seu-repo/fcg-games.git
+cd fcg-games
+```
+
+### 2. Restaurar dependências
+
+```bash
+dotnet restore
+```
+
+### 3. Configurar o banco de dados
+
+Atualize a connection string em `appsettings.Development.json`:
+
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost;Database=FCGGamesDb;User Id=sa;Password=YourPassword;"
+  },
+  "ElasticSearchSettings": {
+    "Uri": "http://localhost:9200"
+  }
+}
+```
+
+### 4. Executar as Migrations
+
+```bash
+dotnet ef database update --project Infrastructure --startup-project API
+```
+
+### 5. Executar a aplicação
+
+```bash
+dotnet run --project API
+```
+
+A API estará disponível em: `https://localhost:5002`
+
+### 6. Acessar Swagger
+
+```
+https://localhost:5002/swagger
+```
+
+## 🐳 Executar com Docker
+
+```bash
+docker build -t fcg-games:latest .
+docker run -p 5002:5002 -e ASPNETCORE_ENVIRONMENT=Production fcg-games:latest
+```
+
+Ou usando docker-compose (se existir):
+
+```bash
+docker-compose up -d
+```
 
 ## 🔐 Autenticação
 
-1. Faça login em `/auth/login` (projeto do microservice fcg-users)
-2. Use o token Bearer retornado no header `Authorization` das requisições protegidas
+### Fluxo de Autenticação
+
+1. Faça login na **FCG.Users API** em `/api/auth/login`
+2. Copie o token Bearer retornado
+3. Use o token no header `Authorization` das requisições protegidas
+
+### Exemplo
+
+```http
+POST /api/games
+Authorization: Bearer {seu_token_aqui}
+Content-Type: application/json
+
+{
+  "title": "Super Game",
+  "description": "Um jogo incrível",
+  "price": 49.99
+}
+```
+
+## 📚 Endpoints Principais
+
+### Jogos
+
+- `POST /api/games` - Criar jogo
+- `GET /api/games` - Listar jogos com paginação
+- `GET /api/games/search` - Buscar jogos com filtros (ElasticSearch)
+- `GET /api/games/{id}` - Obter detalhes do jogo
+- `PUT /api/games/{id}` - Atualizar jogo
+- `DELETE /api/games/{id}` - Deletar jogo
+- `PATCH /api/games/{id}/status` - Atualizar status
+
+### Filtros de Busca
+
+```http
+GET /api/games/search?title=Mario&genre=Action&minPrice=10&maxPrice=50&page=1&pageSize=10
+```
+
+### Health Check
+
+- `GET /health` - Status da aplicação
 
 ## 📁 Estrutura do Projeto
 
 ```
 fcg-games/
-├── API/                 # Controllers e Middlewares
-├── Application/         # Serviços, DTOs e Interfaces
-├── Domain/             # Entidades e Regras de Negócio
-├── Infrastructure/     # EF, Repositórios, Migrations
-├── Tests/              # Testes Unitários e de Integração
+├── API/                          # Camada de Apresentação
+│   ├── Controllers/              # Endpoints da API
+│   ├── Middlewares/              # Error handling, logging
+│   ├── Models/                   # Request/Response models
+│   ├── Program.cs                # Configuração da aplicação
+│   └── appsettings.json          # Configurações
+│
+├── Application/                  # Camada de Aplicação
+│   ├── Services/                 # Lógica de negócio
+│   ├── Interfaces/               # Contratos de serviços
+│   ├── DTO/                      # Data Transfer Objects
+│   ├── Mappings/                 # AutoMapper profiles
+│   └── Exceptions/               # Exceções customizadas
+│
+├── Domain/                       # Camada de Domínio
+│   ├── Entities/                 # Modelos de domínio
+│   ├── Enums/                    # Enumerações
+│   ├── Exceptions/               # Exceções de negócio
+│   └── Repositories/             # Interfaces de repositórios
+│
+├── Infrastructure/               # Camada de Infraestrutura
+│   ├── Context/                  # DbContext do EF
+│   ├── Repositories/             # Implementação de repositórios
+│   ├── Migrations/               # Migrações do banco
+│   ├── Services/                 # Serviços externos (ElasticSearch, etc)
+│   └── Configurations/           # Configurações do EF
+│
+├── Tests/                        # Testes Automatizados
+│   └── UnitTests/                # Testes unitários
+│
+└── k8s/                          # Manifesto Kubernetes
+    ├── deployment.yaml           # Configuração de deployment
+    ├── service.yaml              # Serviço
+    ├── configmap.yaml            # Variáveis de configuração
+    └── secret.yaml               # Secrets
+```
+
+## 🚀 Deployment
+
+### Azure Container Apps
+
+1. **Build da imagem Docker**
+
+```bash
+az acr build --registry {seu-registry} --image fcg-games:latest .
+```
+
+2. **Deploy com Kubernetes**
+
+```bash
+kubectl apply -f k8s/
+```
+
+3. **Verificar status**
+
+```bash
+kubectl get pods
+kubectl logs -f deployment/fcg-games
+```
+
+### Variáveis de Ambiente
+
+Configure as seguintes variáveis:
+
+```env
+ASPNETCORE_ENVIRONMENT=Production
+DATABASE_CONNECTION_STRING=Server=...;Database=...
+JWT_SECRET_KEY=sua-chave-secreta-muito-segura
+JWT_EXPIRATION_MINUTES=1440
+NEW_RELIC_LICENSE_KEY=seu-license-key
+AZURE_SERVICE_BUS_CONNECTION_STRING=Endpoint=...
+ELASTICSEARCH_URI=http://seu-elasticsearch:9200
+LOG_LEVEL=Information
 ```
 
 ## ☁️ Infraestrutura Azure
 
 - **Banco de Dados**: Azure SQL Database
-- **Containerização**: Azure Container Registry & Container Apps
-- **API**: Azure API Management
+- **Container Registry**: Azure Container Registry (ACR)
+- **Orquestração**: Azure Container Apps
+- **Busca**: ElasticSearch via Azure Marketplace
 - **Mensageria**: Azure Service Bus
-- **Serverless**: Azure Functions
-- **Monitoramento**: New Relic (configurado via Dockerfile)
-- **ElasticSearch**: Serveless via Azure Marketplace
+- **Serverless**: Azure Functions (para processamento assíncrono)
+- **API Gateway**: Azure API Management
+- **Monitoramento**: New Relic APM
+- **CI/CD**: GitHub Actions (workflows em `.github/workflows/`)
+
+## 🔍 Busca com ElasticSearch
+
+### Inicializar Índices
+
+```bash
+POST /api/games/index/initialize
+```
+
+### Sincronizar Índices
+
+```bash
+POST /api/games/index/sync
+```
+
+### Buscar Jogos
+
+```http
+GET /api/games/search?title=Mario&genre=Action&minPrice=10&maxPrice=50
+```
+
+### Reindexar Todos os Jogos
+
+```bash
+POST /api/games/index/reindex
+```
+
+## 🧪 Executar Testes
+
+```bash
+# Todos os testes
+dotnet test
+
+# Com cobertura
+dotnet test /p:CollectCoverage=true
+
+# Teste específico
+dotnet test --filter "CategoryName=GameServiceTests"
+```
+
+## 📊 Monitoramento
+
+### New Relic
+
+- Dashboard de performance
+- Rastreamento de transações
+- Alertas automáticos
+- Análise de logs
+
+### Health Check
+
+```http
+GET /health
+```
+
+Retorna status da aplicação e dependências:
+
+```json
+{
+  "status": "Healthy",
+  "timestamp": "2026-01-09T10:30:00Z",
+  "database": "Connected",
+  "elasticsearch": "Connected",
+  "servicebus": "Connected"
+}
+```
+
+## 📝 Logging
+
+Todos os logs são centralizados via New Relic. O middleware customizado adiciona:
+
+- RequestId único
+- Timestamp
+- HTTP Method e Path
+- Status code
+- Duração da requisição
+- Erros detalhados
+
+## 🔗 Links Úteis
+
+- [Documentação .NET 8](https://learn.microsoft.com/pt-br/dotnet/)
+- [Entity Framework Core](https://learn.microsoft.com/pt-br/ef/core/)
+- [ElasticSearch Docs](https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html)
+- [JWT.io](https://jwt.io/)
+- [Azure Documentation](https://learn.microsoft.com/pt-br/azure/)
+- [New Relic Docs](https://docs.newrelic.com/)
+
+## 🤝 Contribuindo
+
+1. Faça um Fork do projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
+
+## 📄 Licença
+
+Este projeto está sob licença MIT. Veja o arquivo LICENSE para mais detalhes.
+
+## 👥 Autores
+
+- **Projeto**: FIAP Cloud Games (FCG)
+- **Mantido por**: Time de Desenvolvimento
+
+## 📞 Suporte
+
+Para problemas, dúvidas ou sugestões, abra uma issue no repositório ou entre em contato com o time de desenvolvimento.
